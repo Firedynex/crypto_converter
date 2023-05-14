@@ -11,19 +11,13 @@ import java.io.IOException;
 /**
  * JavaFX App
  */
-public class CryptoConverterAppDriver extends Application {
+public class CryptoConverterAppDriver {
 
     private static Scene scene;
 
-    @Override
-    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
-    }
-
     public static void main(String[] args) {
-        launch();
+        Converter converter = new Converter();
+        converter.getSymbols();
     }
 
 }

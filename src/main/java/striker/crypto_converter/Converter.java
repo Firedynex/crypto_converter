@@ -3,6 +3,7 @@ package striker.crypto_converter;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -12,6 +13,7 @@ import com.google.gson.GsonBuilder;
 
 import java.nio.charset.StandardCharsets;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -19,6 +21,7 @@ import java.util.Properties;
 public class Converter {
 
     private String[] currencies; 
+    private String ninjaKey;
 
     /** HTTP client. */
     public static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
@@ -32,11 +35,37 @@ public class Converter {
         .create();                                    // builds and returns a Gson object
         
     public Converter() {
-        super();        
+        super();       
+        getKey(); 
     }
 
     public void getSymbols() {
         String url = "https://api.api-ninjas.com/v1/cryptosymbols?";
-        
+        HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(url))
+        .header("X-API-KEY", ninjaKey)
+        .build();
+        try {
+            HttpResponse<String> response = HTTP_CLIENT.send(request, BodyHandlers.ofString());
+            String responseBody = response.body();
+            CryptoSymbols cryptoSymbols = GSON.<CryptoSymbols>fromJson(responseBody, CryptoSymbols.class);
+            currencies = cryptoSymbols.getSymbols();
+            if (currencies != null) {
+                System.out.println("test passed");
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getKey() {
+        try {
+            Properties props = new Properties();
+            BufferedInputStream apiKeyFile = new BufferedInputStream(new FileInputStream("D:\\Coding Projects\\Private_Keys.properties"));
+            props.load(apiKeyFile);
+            ninjaKey = props.getProperty("API_NINJAS_KEY");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
