@@ -51,9 +51,6 @@ public class Converter {
             String responseBody = response.body();
             CryptoSymbols cryptoSymbols = GSON.<CryptoSymbols>fromJson(responseBody, CryptoSymbols.class);
             currencies = cryptoSymbols.getSymbols();
-            if (currencies != null) {
-                System.out.println("test passed");
-            }
         } catch (Throwable e) {
             e.printStackTrace();
         }
