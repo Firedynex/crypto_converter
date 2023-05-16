@@ -1,7 +1,7 @@
 package striker.crypto_converter;
 
 public class CryptoSymbols {
-    String[] symbols;
+    private String[] symbols;
 
     public String[] getSymbols() {
         return this.symbols;

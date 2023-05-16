@@ -36,7 +36,8 @@ public class Converter {
         
     public Converter() {
         super();       
-        getKey(); 
+        getKey();
+        getSymbols();
     }
 
     public void getSymbols() {

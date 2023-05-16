@@ -6,6 +6,6 @@ module striker.crypto_converter {
     requires transitive java.net.http;
     requires transitive com.google.gson;
 
-    opens striker.crypto_converter to javafx.fxml;
+    opens striker.crypto_converter to com.google.gson;
     exports striker.crypto_converter;
 }
