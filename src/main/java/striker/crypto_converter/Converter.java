@@ -33,13 +33,20 @@ public class Converter {
     public static Gson GSON = new GsonBuilder()
         .setPrettyPrinting()                          // enable nice output when printing
         .create();                                    // builds and returns a Gson object
-        
+    
+    /**
+     * Constructor that initializes instance variables.
+     */
     public Converter() {
         super();       
         getKey();
         getSymbols();
     }
 
+    /**
+     * Method that calls the cryptosymbbols api from API Ninjas.
+     * Stores the response into {@code currencies}.
+     */
     public void getSymbols() {
         String url = "https://api.api-ninjas.com/v1/cryptosymbols?";
         HttpRequest request = HttpRequest.newBuilder()
@@ -56,6 +63,9 @@ public class Converter {
         }
     }
 
+    /**
+     * Method that gets the API Key.
+     */
     public void getKey() {
         try {
             Properties props = new Properties();
