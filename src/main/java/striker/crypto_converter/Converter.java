@@ -16,21 +16,26 @@ import java.nio.charset.StandardCharsets;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 
 public class Converter {
 
     private String[] currencies; 
     private String ninjaKey;
+    private static Scanner INPUT = new Scanner(System.in);
 
     /** HTTP client. */
-    public static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+    private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
         .version(HttpClient.Version.HTTP_2)           // uses HTTP protocol version 2 where possible
         .followRedirects(HttpClient.Redirect.NORMAL)  // always redirects, except from HTTPS to HTTP
         .build();                                     // builds and returns a HttpClient object
 
     /** Google {@code Gson} object for parsing JSON-formatted strings. */
-    public static Gson GSON = new GsonBuilder()
+    private static Gson GSON = new GsonBuilder()
         .setPrettyPrinting()                          // enable nice output when printing
         .create();                                    // builds and returns a Gson object
     
@@ -63,6 +68,30 @@ public class Converter {
         }
     }
 
+    /**
+     * This method asks the user to select a cryptocurrency that is in the {@code currencies}.
+     * The user must input the desired cryptocurrency's 3 character symbol along with USD.
+     * @throws IllegalArgumentException if the user chooses an invalid cryptocurrency that's not in the list or if they forget to 
+     * put in USD.
+     * @return String User's valid crypto currency.
+     */
+    public String getCurrency() {
+        String userChoice = "";
+        String usd = "USD";
+        List<String> currenciesList = Arrays.asList(currencies);
+        try {
+            userChoice = INPUT.nextLine();
+            if (currenciesList.contains(userChoice) && userChoice.contains(usd)) {
+                return userChoice;
+            } else {
+                throw new IllegalArgumentException("The given cryptocurrency is not valid!");
+            }
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return userChoice;
+    }
     /**
      * Method that gets the API Key.
      */
