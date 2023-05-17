@@ -6,8 +6,6 @@ package striker.crypto_converter;
 public class CryptoConverterAppDriver {
     public static void main(String[] args) {
         Converter converter = new Converter();
-        String test = converter.getCurrency();
-        System.out.println(converter.getPrice(test));
     }
 
 }

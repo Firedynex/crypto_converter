@@ -3,7 +3,6 @@ package striker.crypto_converter;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -71,17 +70,15 @@ public class Converter {
     /**
      * This method asks the user to select a cryptocurrency that is in the {@code currencies}.
      * The user must input the desired cryptocurrency's 3 character symbol along with USD.
-     * @throws IllegalArgumentException if the user chooses an invalid cryptocurrency that's not in the list or if they forget to 
-     * put in USD.
+     * @throws IllegalArgumentException if the user chooses an invalid cryptocurrency that's not in the list.
      * @return String User's valid crypto currency.
      */
     public String getCurrency() {
         String userChoice = "";
-        String usd = "USD";
         List<String> currenciesList = Arrays.asList(currencies);
         try {
-            userChoice = INPUT.nextLine();
-            if (currenciesList.contains(userChoice) && userChoice.contains(usd)) {
+            userChoice = INPUT.nextLine() + "USD";
+            if (currenciesList.contains(userChoice)) {
                 return userChoice;
             } else {
                 throw new IllegalArgumentException("The given cryptocurrency is not valid!");
@@ -113,6 +110,29 @@ public class Converter {
             e.printStackTrace();
         }
         return 0.0;
+    }
+
+    /**
+     * Method that gets the user's desired country for currency conversion.
+     * @return String of the country's currency symbol.
+     */
+    public String getCountrySymbol() {
+        String url = "https://api.api-ninjas.com/v1/country?name=";
+        String countryName = "";
+        try {
+            countryName = URLEncoder.encode(INPUT.nextLine(), StandardCharsets.UTF_8);
+            HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url + countryName))
+            .header("X-API-KEY", ninjaKey)
+            .build();
+            HttpResponse<String> response = HTTP_CLIENT.send(request, BodyHandlers.ofString());
+            String responseBody = response.body();
+            Country[] country = GSON.<Country[]>fromJson(responseBody, Country[].class);
+            return country[0].getCurrency().getCode();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return countryName;
     }
     
     /**
