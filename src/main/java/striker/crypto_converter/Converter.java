@@ -92,6 +92,29 @@ public class Converter {
         
         return userChoice;
     }
+
+    /**
+     * This method takes in the user's choice of cryptocurrency and returns the USD conversion of it.
+     * @param userCrypto User's choice of cryptocurrency.
+     * @return double price of the user's crypto into USD.
+     */
+    public double getPrice(String userCrypto) {
+        String url = "https://api.api-ninjas.com/v1/cryptoprice?symbol=" + userCrypto;
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .header("X-API-KEY", ninjaKey)
+            .build();
+        try {
+            HttpResponse<String> response = HTTP_CLIENT.send(request, BodyHandlers.ofString());
+            String responseBody = response.body();
+            CryptoPrice price = GSON.<CryptoPrice>fromJson(responseBody, CryptoPrice.class);
+            return price.getPrice();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+    
     /**
      * Method that gets the API Key.
      */
