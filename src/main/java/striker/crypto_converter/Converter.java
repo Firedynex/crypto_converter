@@ -136,6 +136,30 @@ public class Converter {
     }
     
     /**
+     * This method converts the USD value of the cryptocurrency into the currency
+     * of the user's desired country.
+     * @param currencySymbol The symbol of the currency the user wants to convert to.
+     * @param usdPrice Price of the cryptocurrency in USD.
+     * @return double Converted currency of the desired crypto currency.
+     */
+    public double convert(String currencySymbol, double usdPrice) {
+        String url = "https://api.api-ninjas.com/v1/convertcurrency?have=USD&want=" +
+        currencySymbol + "&amount=" + usdPrice;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .header("X-API-KEY", ninjaKey)
+            .build();
+            HttpResponse<String> response = HTTP_CLIENT.send(request, BodyHandlers.ofString());
+            String responseBody = response.body();
+            CurrencyConvert convertedCurrency = GSON.<CurrencyConvert>fromJson(responseBody, CurrencyConvert.class);
+            return convertedCurrency.getNewAmount();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+    /**
      * Method that gets the API Key.
      */
     public void getKey() {
