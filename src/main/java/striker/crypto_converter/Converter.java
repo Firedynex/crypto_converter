@@ -21,6 +21,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
+/**
+ * This class is the backend of the app. It takes the user's desired
+ * country and cryptocurrency and converts the cryptocurrency into the
+ * currency of the selected country.
+ */
 public class Converter {
 
     private String[] currencies; 
