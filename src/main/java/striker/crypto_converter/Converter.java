@@ -164,6 +164,7 @@ public class Converter {
         }
         return 0.0;
     }
+    
     /**
      * Method that gets the API Key.
      */
