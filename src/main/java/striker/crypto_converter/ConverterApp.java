@@ -28,7 +28,7 @@ public class ConverterApp extends Application{
 
     public ConverterApp() {
         this.root = new VBox(10);
-        this.currencyField = new TextField("Enter a crypto currency!");
+        this.currencyField = new TextField("Enter a cryptocurrency code!");
         this.countryField = new TextField("Enter a country!");
         this.finalConversionLabel = new Label("Your conversion will show up here.");
         this.convertButton = new Button("Convert!");
@@ -87,5 +87,4 @@ public class ConverterApp extends Application{
             throw new IllegalArgumentException("Desired currency is not valid!");
         }
     }
-    
 }
