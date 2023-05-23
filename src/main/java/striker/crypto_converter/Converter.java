@@ -56,7 +56,7 @@ public class Converter {
      * Method that calls the cryptosymbbols api from API Ninjas.
      * Stores the response into {@code currencies}.
      */
-    public void getSymbols() {
+    private void getSymbols() {
         String url = "https://api.api-ninjas.com/v1/cryptosymbols?";
         HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(url))
@@ -73,26 +73,19 @@ public class Converter {
     }
 
     /**
-     * This method asks the user to select a cryptocurrency that is in the {@code currencies}.
+     * This method gets a user's choice of cryptocurrency {@code currency} 
+     * and returns whether it is valid or not.
      * The user must input the desired cryptocurrency's 3 character symbol along with USD.
-     * @throws IllegalArgumentException if the user chooses an invalid cryptocurrency that's not in the list.
-     * @return String User's valid crypto currency.
+     * @return boolean True if user's cryptocurrency is valid and false otherwise.
      */
-    public String getCurrency() {
-        String userChoice = "";
+    public boolean validCurrency(String currency) {
+        String userChoice = currency + "USD";
         List<String> currenciesList = Arrays.asList(currencies);
-        try {
-            userChoice = INPUT.nextLine() + "USD";
-            if (currenciesList.contains(userChoice)) {
-                return userChoice;
-            } else {
-                throw new IllegalArgumentException("The given cryptocurrency is not valid!");
-            }
-        } catch (Throwable e) {
-            System.out.println(e.getMessage());
+        if (currenciesList.contains(userChoice)) {
+            return true;
+        } else {
+            return false;
         }
-        
-        return userChoice;
     }
 
     /**
@@ -101,7 +94,7 @@ public class Converter {
      * @return double price of the user's crypto into USD.
      */
     public double getPrice(String userCrypto) {
-        String url = "https://api.api-ninjas.com/v1/cryptoprice?symbol=" + userCrypto;
+        String url = "https://api.api-ninjas.com/v1/cryptoprice?symbol=" + userCrypto +"USD";
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .header("X-API-KEY", ninjaKey)
@@ -119,13 +112,14 @@ public class Converter {
 
     /**
      * Method that gets the user's desired country for currency conversion.
+     * @param countryNameString Name of the user's desired country to convert to.
      * @return String of the country's currency symbol.
      */
-    public String getCountrySymbol() {
+    public String getCountrySymbol(String countryNameString) {
         String url = "https://api.api-ninjas.com/v1/country?name=";
         String countryName = "";
         try {
-            countryName = URLEncoder.encode(INPUT.nextLine(), StandardCharsets.UTF_8);
+            countryName = URLEncoder.encode(countryNameString, StandardCharsets.UTF_8);
             HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url + countryName))
             .header("X-API-KEY", ninjaKey)
@@ -168,7 +162,7 @@ public class Converter {
     /**
      * Method that gets the API Key.
      */
-    public void getKey() {
+    private void getKey() {
         try {
             Properties props = new Properties();
             BufferedInputStream apiKeyFile = new BufferedInputStream(new FileInputStream("D:\\Coding Projects\\Private_Keys.properties"));
