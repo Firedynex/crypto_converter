@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import java.util.Scanner;
 
 /**
  * This class is the backend of the app. It takes the user's desired
@@ -30,7 +29,6 @@ public class Converter {
 
     private String[] currencies; 
     private String ninjaKey;
-    private static Scanner INPUT = new Scanner(System.in);
 
     /** HTTP client. */
     private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()

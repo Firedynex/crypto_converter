@@ -28,7 +28,7 @@ public class ConverterApp extends Application{
 
     public ConverterApp() {
         this.root = new VBox(10);
-        this.currencyField = new TextField("Enter a crypto currency!");
+        this.currencyField = new TextField("Enter a cryptocurrency code!");
         this.countryField = new TextField("Enter a country!");
         this.finalConversionLabel = new Label("Your conversion will show up here.");
         this.convertButton = new Button("Convert!");
@@ -43,7 +43,12 @@ public class ConverterApp extends Application{
         this.root.getChildren().addAll(this.currencyField, this.countryField, this.finalConversionLabel, this.convertButton);
         setVGrowMultiple(root, this.currencyField, this.countryField, this.finalConversionLabel, this.convertButton);
         EventHandler<ActionEvent> convertCurrency = (ActionEvent e) -> {
-            convert();
+            Runnable convertRunnable = () -> {
+                convert();
+            };
+            Thread convertThread = new Thread(convertRunnable);
+            convertThread.setDaemon(true);
+            convertThread.start();
         };
         this.convertButton.setOnAction(convertCurrency);
     }
@@ -82,10 +87,9 @@ public class ConverterApp extends Application{
             double usdPrice = converter.getPrice(userCurrency);
             String country = converter.getCountrySymbol(countryField.getText());
             String convertedPrice = String.valueOf(converter.convert(country, usdPrice));
-            finalConversionLabel.setText(convertedPrice.toString());
+            Platform.runLater(() -> finalConversionLabel.setText(convertedPrice.toString()));
         } else {
             throw new IllegalArgumentException("Desired currency is not valid!");
         }
     }
-    
 }
