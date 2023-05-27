@@ -6,9 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -83,13 +86,25 @@ public class ConverterApp extends Application{
      */
     public void convert() {
         String userCurrency = currencyField.getText();
-        if (converter.validCurrency(userCurrency)) {
-            double usdPrice = converter.getPrice(userCurrency);
-            String country = converter.getCountrySymbol(countryField.getText());
-            String convertedPrice = String.valueOf(converter.convert(country, usdPrice));
-            Platform.runLater(() -> finalConversionLabel.setText(convertedPrice.toString()));
-        } else {
-            throw new IllegalArgumentException("Desired currency is not valid!");
+        try {
+            if (converter.validCurrency(userCurrency)) {
+                double usdPrice = converter.getPrice(userCurrency);
+                String country = converter.getCountrySymbol(countryField.getText());
+                String convertedPrice = String.valueOf(converter.convert(country, usdPrice));
+                Platform.runLater(() -> finalConversionLabel.setText(convertedPrice.toString()));
+            } else {
+                throw new IllegalArgumentException("Desired currency is not valid!");
+            }
+        } catch (Throwable e) {
+            TextArea errorText = new TextArea(e.getMessage());
+            errorText.setEditable(false);
+            errorText.setWrapText(true);
+            Platform.runLater(() -> {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.getDialogPane().setContent(errorText);
+                alert.setResizable(true);
+                alert.showAndWait();
+            });
         }
     }
 }
