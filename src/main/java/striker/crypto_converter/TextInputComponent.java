@@ -16,8 +16,8 @@ public class TextInputComponent extends HBox{
         super(10);
         this.label = new Label(labelString);
         this.textField = new TextField(textInputString);
-        HBox.setHgrow(label, Priority.ALWAYS);
-        HBox.setHgrow(textField, Priority.ALWAYS);
+        this.setHgrow(label, Priority.ALWAYS);
+        this.setHgrow(textField, Priority.ALWAYS);
         this.getChildren().addAll(this.label, this.textField);
     }
 

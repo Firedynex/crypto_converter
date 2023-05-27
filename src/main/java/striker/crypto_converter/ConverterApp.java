@@ -10,11 +10,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ConverterApp extends Application{
@@ -68,7 +66,7 @@ public class ConverterApp extends Application{
         stage.setTitle("Crypto Converter App");
         stage.setScene(scene);
         stage.setOnCloseRequest(event -> Platform.exit());
-        stage.sizeToScene();
+        stage.setWidth(500);
         stage.show();
         Platform.runLater(() -> this.stage.setResizable(false));
     }
