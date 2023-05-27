@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ConverterApp extends Application{
@@ -22,8 +23,8 @@ public class ConverterApp extends Application{
     private Scene scene;
     
     private VBox root;
-    private TextField currencyField;
-    private TextField countryField;
+    private TextInputComponent currencyField;
+    private TextInputComponent countryField;
     private Label finalConversionLabel;
     private Button convertButton;
 
@@ -31,8 +32,8 @@ public class ConverterApp extends Application{
 
     public ConverterApp() {
         this.root = new VBox(10);
-        this.currencyField = new TextField("Enter a cryptocurrency code!");
-        this.countryField = new TextField("Enter a country!");
+        this.currencyField = new TextInputComponent("Cryptocurrency:", "Enter a cryptocurrency code!");
+        this.countryField = new TextInputComponent("Country: ", "Enter a country!");
         this.finalConversionLabel = new Label("Your conversion will show up here.");
         this.convertButton = new Button("Convert!");
         this.converter = new Converter();
@@ -85,11 +86,11 @@ public class ConverterApp extends Application{
      * Converts the cryptocurrency into the user's desired currency.
      */
     public void convert() {
-        String userCurrency = currencyField.getText();
+        String userCurrency = currencyField.getTextField().getText();
         try {
             if (converter.validCurrency(userCurrency)) {
                 double usdPrice = converter.getPrice(userCurrency);
-                String country = converter.getCountrySymbol(countryField.getText());
+                String country = converter.getCountrySymbol(countryField.getTextField().getText());
                 String convertedPrice = String.valueOf(converter.convert(country, usdPrice));
                 Platform.runLater(() -> finalConversionLabel.setText(convertedPrice.toString()));
             } else {
