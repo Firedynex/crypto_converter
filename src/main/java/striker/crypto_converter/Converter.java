@@ -72,18 +72,14 @@ public class Converter {
 
     /**
      * This method gets a user's choice of cryptocurrency {@code currency} 
-     * and returns whether it is valid or not.
-     * The user must input the desired cryptocurrency's 3 character symbol along with USD.
+     * and returns whether it is valid or not (i.e is in the {@code currencies} array).
+     * The user must input the desired cryptocurrency's 3 character symbol.
      * @return boolean True if user's cryptocurrency is valid and false otherwise.
      */
     public boolean validCurrency(String currency) {
         String userChoice = currency + "USD";
         List<String> currenciesList = Arrays.asList(currencies);
-        if (currenciesList.contains(userChoice)) {
-            return true;
-        } else {
-            return false;
-        }
+        return currenciesList.contains(userChoice);
     }
 
     /**
@@ -103,9 +99,8 @@ public class Converter {
             CryptoPrice price = GSON.<CryptoPrice>fromJson(responseBody, CryptoPrice.class);
             return price.getPrice();
         } catch (Throwable e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("The given crypto currency is not valid!");
         }
-        return 0.0;
     }
 
     /**
@@ -127,9 +122,8 @@ public class Converter {
             Country[] country = GSON.<Country[]>fromJson(responseBody, Country[].class);
             return country[0].getCurrency().getCode();
         } catch (Throwable e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("The given country is not valid!");
         }
-        return countryName;
     }
     
     /**
