@@ -9,6 +9,9 @@ public class TextInputComponent extends HBox{
     private Label label;
     private TextField textField;
     
+    /**
+     * Constructor that initializes instance variables.
+     */
     public TextInputComponent(String labelString, String textInputString) {
         super(10);
         this.label = new Label(labelString);
@@ -18,10 +21,16 @@ public class TextInputComponent extends HBox{
         this.getChildren().addAll(this.label, this.textField);
     }
 
+    /**
+     * Accessor method for {@code label}.
+     */
     public Label getLabel() {
         return this.label;
     }
 
+    /**
+     * Accessor method for {@code textField}.
+     */
     public TextField getTextField() {
         return this.textField;
     }
