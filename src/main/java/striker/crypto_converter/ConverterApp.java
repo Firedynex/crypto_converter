@@ -91,6 +91,10 @@ public class ConverterApp extends Application{
         String userCurrency = currencyField.getTextField().getText();
         double amount = Double.parseDouble(currencyAmountField.getTextField().getText());
         try {
+            if (amount < 0) {
+                throw new IllegalArgumentException("Invalid amount of currency!");
+            }
+            
             if (converter.validCurrency(userCurrency)) {
                 double usdPrice = converter.getPrice(userCurrency, amount);
                 CountryCurrency country = converter.getCurrencySymbol(countryField.getTextField().getText());
