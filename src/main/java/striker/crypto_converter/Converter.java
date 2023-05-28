@@ -85,9 +85,10 @@ public class Converter {
     /**
      * This method takes in the user's choice of cryptocurrency and returns the USD conversion of it.
      * @param userCrypto User's choice of cryptocurrency.
+     * @param amount Amount of cryptocurrency the user wants to convert.
      * @return double price of the user's crypto into USD.
      */
-    public double getPrice(String userCrypto) {
+    public double getPrice(String userCrypto, double amount) {
         String url = "https://api.api-ninjas.com/v1/cryptoprice?symbol=" + userCrypto +"USD";
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
@@ -97,7 +98,7 @@ public class Converter {
             HttpResponse<String> response = HTTP_CLIENT.send(request, BodyHandlers.ofString());
             String responseBody = response.body();
             CryptoPrice price = GSON.<CryptoPrice>fromJson(responseBody, CryptoPrice.class);
-            return price.getPrice();
+            return price.getPrice() * amount;
         } catch (Throwable e) {
             throw new IllegalArgumentException("The given crypto currency is not valid!");
         }

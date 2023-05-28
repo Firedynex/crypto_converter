@@ -2,6 +2,7 @@ package striker.crypto_converter;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -23,6 +24,7 @@ public class ConverterApp extends Application{
     private VBox root;
     private TextInputComponent currencyField;
     private TextInputComponent countryField;
+    private TextInputComponent currencyAmountField;
     private Label finalConversionLabel;
     private Button convertButton;
 
@@ -32,6 +34,7 @@ public class ConverterApp extends Application{
         this.root = new VBox(10);
         this.currencyField = new TextInputComponent("Cryptocurrency:", "Enter a cryptocurrency code!");
         this.countryField = new TextInputComponent("Country: ", "Enter a country!");
+        this.currencyAmountField = new TextInputComponent("Amount: ", "Enter the amount of crypto you want to convert!");
         this.finalConversionLabel = new Label("Your conversion will show up here.");
         this.convertButton = new Button("Convert!");
         this.converter = new Converter();
@@ -42,8 +45,9 @@ public class ConverterApp extends Application{
      */
     @Override
     public void init() {
-        this.root.getChildren().addAll(this.currencyField, this.countryField, this.finalConversionLabel, this.convertButton);
-        setVGrowMultiple(root, this.currencyField, this.countryField, this.finalConversionLabel, this.convertButton);
+        this.root.getChildren().addAll(this.currencyField, this.countryField, this.currencyAmountField, 
+        this.finalConversionLabel, this.convertButton);
+        setVGrowMultiple(root, root.getChildren());
         EventHandler<ActionEvent> convertCurrency = (ActionEvent e) -> {
             Runnable convertRunnable = () -> {
                 convert();
@@ -74,7 +78,7 @@ public class ConverterApp extends Application{
     /**
      * Method that makes all the nodes in a VBox grow to an appropriate size.
      */
-    private void setVGrowMultiple(VBox vBox, Node... nodes) {
+    private void setVGrowMultiple(VBox vBox, ObservableList<Node> nodes) {
         for (Node node: nodes) {
             vBox.setVgrow(node, Priority.ALWAYS);
         }
@@ -85,9 +89,10 @@ public class ConverterApp extends Application{
      */
     public void convert() {
         String userCurrency = currencyField.getTextField().getText();
+        double amount = Double.parseDouble(currencyAmountField.getTextField().getText());
         try {
             if (converter.validCurrency(userCurrency)) {
-                double usdPrice = converter.getPrice(userCurrency);
+                double usdPrice = converter.getPrice(userCurrency, amount);
                 String country = converter.getCountrySymbol(countryField.getTextField().getText());
                 String convertedPrice = String.valueOf(converter.convert(country, usdPrice));
                 Platform.runLater(() -> finalConversionLabel.setText(convertedPrice.toString()));
