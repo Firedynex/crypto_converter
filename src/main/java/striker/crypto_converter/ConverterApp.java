@@ -70,7 +70,7 @@ public class ConverterApp extends Application{
         stage.setTitle("Crypto Converter App");
         stage.setScene(scene);
         stage.setOnCloseRequest(event -> Platform.exit());
-        stage.setWidth(500);
+        stage.setWidth(400);
         stage.show();
         Platform.runLater(() -> this.stage.setResizable(false));
     }
