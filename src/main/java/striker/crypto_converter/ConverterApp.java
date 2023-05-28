@@ -70,7 +70,7 @@ public class ConverterApp extends Application{
         stage.setTitle("Crypto Converter App");
         stage.setScene(scene);
         stage.setOnCloseRequest(event -> Platform.exit());
-        stage.setWidth(500);
+        stage.setWidth(400);
         stage.show();
         Platform.runLater(() -> this.stage.setResizable(false));
     }
@@ -93,9 +93,11 @@ public class ConverterApp extends Application{
         try {
             if (converter.validCurrency(userCurrency)) {
                 double usdPrice = converter.getPrice(userCurrency, amount);
-                String country = converter.getCountrySymbol(countryField.getTextField().getText());
-                String convertedPrice = String.valueOf(converter.convert(country, usdPrice));
-                Platform.runLater(() -> finalConversionLabel.setText(convertedPrice.toString()));
+                CountryCurrency country = converter.getCurrencySymbol(countryField.getTextField().getText());
+                String countryCurrencyCode = converter.getCountryCurrencyCode(country);
+                String countryCurrencyName = converter.getCountryCurrencyName(country);
+                String convertedPrice = String.valueOf(converter.convert(countryCurrencyCode, usdPrice));
+                Platform.runLater(() -> finalConversionLabel.setText(convertedPrice.toString() + " " + countryCurrencyName));
             } else {
                 throw new IllegalArgumentException("Desired currency is not valid!");
             }

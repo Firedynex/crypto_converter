@@ -105,11 +105,11 @@ public class Converter {
     }
 
     /**
-     * Method that gets the user's desired country for currency conversion.
+     * Method that gets the user's desired country currency for currency conversion.
      * @param countryNameString Name of the user's desired country to convert to.
-     * @return String of the country's currency symbol.
+     * @return CountryCurrency - currency object of the country.
      */
-    public String getCountrySymbol(String countryNameString) {
+    public CountryCurrency getCurrencySymbol(String countryNameString) {
         String url = "https://api.api-ninjas.com/v1/country?name=";
         String countryName = "";
         try {
@@ -121,10 +121,28 @@ public class Converter {
             HttpResponse<String> response = HTTP_CLIENT.send(request, BodyHandlers.ofString());
             String responseBody = response.body();
             Country[] country = GSON.<Country[]>fromJson(responseBody, Country[].class);
-            return country[0].getCurrency().getCode();
+            return country[0].getCurrency();
         } catch (Throwable e) {
             throw new IllegalArgumentException("The given country is not valid!");
         }
+    }
+
+    /**
+     * Returns the currency code of the desired country.
+     * @param countryCurrency currency object of the desired country.
+     * @return String - code of the country's currency.
+     */
+    public String getCountryCurrencyCode(CountryCurrency countryCurrency) {
+        return countryCurrency.getCode();
+    }
+
+    /**
+     * Returns the name of the country's currency.
+     * @param countryCurrency currency object of the desired country.
+     * @return String - name of the country's currency.
+     */
+    public String getCountryCurrencyName(CountryCurrency countryCurrency) {
+        return countryCurrency.getName();
     }
     
     /**
