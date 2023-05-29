@@ -96,6 +96,7 @@ public class ConverterApp extends Application{
             }
             
             if (converter.validCurrency(userCurrency)) {
+                Platform.runLater(() -> finalConversionLabel.setText("Converting..."));
                 double usdPrice = converter.getPrice(userCurrency, amount);
                 CountryCurrency country = converter.getCurrencySymbol(countryField.getTextField().getText());
                 String countryCurrencyCode = converter.getCountryCurrencyCode(country);
