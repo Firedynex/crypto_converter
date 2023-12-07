@@ -110,6 +110,7 @@ public class ConverterApp extends Application{
             TextArea errorText = new TextArea(e.getMessage());
             errorText.setEditable(false);
             errorText.setWrapText(true);
+            Platform.runLater(() -> finalConversionLabel.setText("Conversion Failed"));
             Platform.runLater(() -> {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.getDialogPane().setContent(errorText);
