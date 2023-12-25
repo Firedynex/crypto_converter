@@ -176,7 +176,7 @@ public class Converter {
     private void getKey() {
         try {
             Properties props = new Properties();
-            BufferedInputStream apiKeyFile = new BufferedInputStream(new FileInputStream("D:\\Coding Projects\\Private_Keys.properties"));
+            BufferedInputStream apiKeyFile = new BufferedInputStream(new FileInputStream("Private_Keys.properties"));
             props.load(apiKeyFile);
             ninjaKey = props.getProperty("API_NINJAS_KEY");
         } catch (IOException e) {
